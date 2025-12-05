@@ -1,6 +1,8 @@
 🌐 El Arte de la Contabilidad
 Contabilidad moderna, visual e impulsada por datos
-<p align="center"> <img src="https://raw.githubusercontent.com/github/explore/main/topics/accounting/accounting.png" width="120" alt="Accounting"/> </p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/github/explore/master/topics/finance/finance.png" width="120" alt="Finance Icon"/>
+</p>
 🎨 ¿Qué es El Arte de la Contabilidad?
 
 Es un espacio dedicado a mostrar cómo la contabilidad puede convertirse en una herramienta estratégica cuando se integra con:
