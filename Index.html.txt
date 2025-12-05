@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Profesional | Contador & Analista de Datos</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0078d4; /* Color de Power BI */
+            margin-bottom: 5px;
+        }
+        h2 {
+            color: #00bcf2;
+            margin-top: 0;
+            font-weight: normal;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .contacto a {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .destacado {
+            background-color: #e6f7ff;
+            padding: 15px;
+            border-left: 5px solid #0078d4;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡Bienvenido a mi Portafolio!</h1>
+        
+        <h2>Contador & Analista de Datos en Power BI</h2>
+        
+        <p>Soy un profesional especializado en la **optimización de procesos contables** y la **visualización de datos financieros** mediante herramientas de Business Intelligence. Mi objetivo es transformar datos brutos en información estratégica y clara.</p>
+        
+        <div class="destacado">
+            <h3>Mis Habilidades Clave</h3>
+            <ul>
+                <li>📊 Creación y optimización de **Modelos de Datos en Power BI**.</li>
+                <li>⚙️ Automatización de informes contables y financieros (DAX).</li>
+                <li>💰 Manejo avanzado de normativas contables (IFRS/NIIF).</li>
+                <li>📈 Diseño de **Dashboards interactivos** para la toma de decisiones.</li>
+            </ul>
+        </div>
+        
+        <h3>Contacto</h3>
+        <ul class="contacto">
+            <li>📧 Email: <a href="mailto:tu.email@ejemplo.com">tu.email@ejemplo.com</a></li>
+            <li>🔗 LinkedIn: <a href="https://linkedin.com/in/tuperfil" target="_blank">linkedin.com/in/tuperfil</a></li>
+            <li>💻 GitHub: <a href="https://github.com/tuusuario" target="_blank">Ver Repositorios</a></li>
+        </ul>
+    </div>
+</body>
+</html>
