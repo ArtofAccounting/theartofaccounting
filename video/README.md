@@ -2,11 +2,16 @@
 
 - `npm install`
 - `npm run studio` para editar en vivo.
-- `npm run render:reel` (9:16, Instagram/Facebook) y `npm run render:linkedin` (4:5).
+- Render: `npx remotion render src/index.ts <Composición> out/<archivo>.mp4`
+  - `BalancesReel` (9:16, voz + música), `BalancesReelSoloVoz` (9:16, solo voz,
+    para añadir el audio en tendencia desde Instagram/TikTok) y `BalancesLinkedIn` (4:5).
+- Después del render, normalizar el volumen para redes:
+  `ffmpeg -i in.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -c:a aac -b:a 192k out.mp4`
 
-Composición: `src/BalancesPromo.tsx` (Explorador de Balances, 34 s).
-
-- `public/balances/`: capturas reales del Explorador (celular a 3× y escritorio a 2×),
-  tomadas con el sitio de `herramientas-financieras` servido en local.
-- `public/fonts/`: Manrope e IBM Plex Sans (licencia OFL), incluidas para que el
-  render no dependa de Google Fonts.
+Contenido:
+- `src/BalancesPromo.tsx`: escenas y tiempos (`T`), ajustados a la locución.
+- `public/balances/`: capturas reales del Explorador de Balances.
+- `public/audio/<voz>/`: locución por escena (voces Kokoro: `em_alex`, `ef_dora`,
+  `em_santa`). La voz se elige en `src/Root.tsx`.
+- `public/audio/musica.wav`: pista original sintetizada (sin derechos de terceros).
+- `public/fonts/`: Manrope e IBM Plex Sans (licencia OFL).

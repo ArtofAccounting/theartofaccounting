@@ -8,6 +8,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
   Easing,
+  Audio,
 } from 'remotion';
 import {loadFont} from '@remotion/fonts';
 
@@ -262,7 +263,7 @@ const Search: React.FC = () => {
   const enter = useSpring(0, 18);
   // frames de escritura: home, t1..t8
   const typeStart = 30;
-  const step = 6;
+  const step = 5;
   const idx = Math.max(0, Math.min(8, Math.floor((frame - typeStart) / step) + 1));
   const src = idx === 0 ? 'm_home.jpg' : `m_t${idx}.jpg`;
   return (
@@ -274,7 +275,7 @@ const Search: React.FC = () => {
       </Caption>
       <Phone style={{transform: `translateY(${(1 - enter) * screenH}px)`}}>
         <Img src={img(src)} style={{width: '100%'}} />
-        <Tap x={180} y={585} at={130} />
+        <Tap x={180} y={585} at={118} />
       </Phone>
     </AbsoluteFill>
   );
@@ -287,18 +288,18 @@ const Company: React.FC = () => {
   const {width, height} = useVideoConfig();
   const {s} = usePhoneSize();
   const scroll = ease(frame, 5, 35, 0, POS.card - 60);
-  const pop = useSpring(55, 16);
+  const pop = useSpring(45, 16);
   const tall = useIsTall();
   const kw = Math.min(width * 0.86, (height * (tall ? 0.7 : 0.66) * 1170) / 1782);
   const ks = kw / 1170;
   const kh = 1782 * ks;
   // marco sobre "Margen neto" (px de la captura)
   const box = {x: 70, y: 1000, w: 496, h: 334};
-  const hl = ease(frame, 95, 110);
+  const hl = ease(frame, 78, 92);
   return (
     <AbsoluteFill>
-      <Caption out={45}>Su ficha financiera, al instante</Caption>
-      <Caption delay={60}>
+      <Caption out={38}>Su ficha financiera, al instante</Caption>
+      <Caption delay={48}>
         Margen neto <Gold>6,1 %</Gold>
         <br />
         vs. su sector 1,4 %
@@ -371,17 +372,17 @@ const ChartCard: React.FC<{src: string; at: number; out?: number; rotate?: numbe
 
 const Charts: React.FC = () => (
   <AbsoluteFill>
-    <Caption out={80}>
+    <Caption out={46}>
       <Gold>4 años</Gold> de ingresos
       <br />y utilidad
     </Caption>
-    <ChartCard src="m_chart0.png" at={0} out={80} rotate={4} />
-    <Caption delay={88}>
+    <ChartCard src="m_chart0.png" at={0} out={46} rotate={4} />
+    <Caption delay={52}>
       ¿Cómo se <Gold>financia</Gold>?
       <br />
       Deuda vs. patrimonio
     </Caption>
-    <ChartCard src="m_chart1.png" at={88} rotate={-4} />
+    <ChartCard src="m_chart1.png" at={52} rotate={-4} />
   </AbsoluteFill>
 );
 
@@ -441,7 +442,7 @@ const TableCard: React.FC<{
 
 const Tables: React.FC = () => (
   <AbsoluteFill>
-    <Caption out={95}>
+    <Caption out={66}>
       Estados financieros
       <br />
       <Gold>completos</Gold>
@@ -451,11 +452,11 @@ const Tables: React.FC = () => (
       w={2080}
       h={1354}
       at={0}
-      out={95}
-      hl={{x: 50, y: 1135, w: 1980, h: 85, at: 30}}
+      out={66}
+      hl={{x: 50, y: 1135, w: 1980, h: 85, at: 20}}
       focus={{x: 0, y: 1250, z: 1.45, zWide: 1.2}}
     />
-    <Caption delay={103}>
+    <Caption delay={72}>
       Compáralo con la
       <br />
       <Gold>mediana de su sector</Gold>
@@ -464,8 +465,8 @@ const Tables: React.FC = () => (
       src="d_table2.png"
       w={2080}
       h={1946}
-      at={103}
-      hl={{x: 1570, y: 110, w: 450, h: 1715, at: 128}}
+      at={72}
+      hl={{x: 1570, y: 110, w: 450, h: 1715, at: 90}}
       focus={{x: 2000, y: 700, z: 1.7, zWide: 1.2}}
     />
   </AbsoluteFill>
@@ -490,60 +491,98 @@ const Stats: React.FC = () => {
   return (
     <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', gap: 70 * k}}>
       <Stat value={n.toLocaleString('es-EC')} label="empresas del Ecuador" at={0} />
-      <Stat value="2022–2025" label="4 años de balances" at={20} />
-      <Stat value="100 %" label="gratis" at={40} />
+      <Stat value="2022–2025" label="4 años de balances" at={15} />
+      <Stat value="100 %" label="gratis" at={30} />
     </AbsoluteFill>
   );
 };
 
-// 7. Cierre
+// 7. Cierre con el logo FV
+const LogoFV: React.FC<{size: number}> = ({size}) => {
+  const frame = useCurrentFrame();
+  const blue = ease(frame, 0, 18);
+  const gold = ease(frame, 12, 30);
+  return (
+    <svg width={size} height={(size * 98) / 108} viewBox="0 0 108 98" style={{overflow: 'visible'}}>
+      <path
+        fill={BLUE}
+        d="M1.7 6 H61.3 L55.4 16.6 H16.2 L21.5 26.2 H51 V35.4 H26.9 L55.6 87 L51.2 95.3 Z"
+        style={{opacity: blue, transform: `translateX(${(1 - blue) * -30}px)`}}
+      />
+      <path
+        fill={GOLD}
+        d="M42.1 40.8 H51 L62 59.2 L95.3 1.3 H105.3 L61.5 76.4 Z"
+        style={{opacity: gold, transform: `translate(${(1 - gold) * 30}px, ${(1 - gold) * 30}px)`}}
+      />
+    </svg>
+  );
+};
+
 const Cta: React.FC = () => {
   const frame = useCurrentFrame();
   const k = useK();
-  const pulse = 1 + Math.sin(frame / 6) * 0.025 * ease(frame, 40, 50);
+  const pulse = 1 + Math.sin(frame / 6) * 0.025 * ease(frame, 50, 60);
+  const logo = useSpring(0, 12);
   return (
     <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', padding: 70 * k, textAlign: 'center'}}>
-      <div style={{opacity: useSpring(0), fontFamily: MANROPE, fontWeight: 700, fontSize: 40 * k, color: GOLD, letterSpacing: 4 * k}}>
-        HERRAMIENTA GRATUITA
-      </div>
       <div
         style={{
-          opacity: useSpring(6),
-          transform: `translateY(${(1 - useSpring(6)) * 40}px)`,
-          fontFamily: MANROPE,
-          fontWeight: 800,
-          fontSize: 112 * k,
-          color: '#fff',
-          lineHeight: 1.02,
-          letterSpacing: -3 * k,
-          marginTop: 20 * k,
+          background: '#fff',
+          borderRadius: 48 * k,
+          padding: 44 * k,
+          transform: `scale(${0.5 + logo * 0.5})`,
+          opacity: logo,
+          boxShadow: '0 30px 90px rgba(26,79,232,.55)',
         }}
       >
-        Explorador
-        <br />
-        de Balances
+        <LogoFV size={190 * k} />
       </div>
       <div
         style={{
-          marginTop: 60 * k,
+          marginTop: 50 * k,
+          opacity: useSpring(14),
+          transform: `translateY(${(1 - useSpring(14)) * 40}px)`,
+          fontFamily: MANROPE,
+          fontWeight: 800,
+          fontSize: 84 * k,
+          color: '#fff',
+          lineHeight: 1.05,
+          letterSpacing: -2 * k,
+        }}
+      >
+        El Arte de la
+        <br />
+        Contabilidad
+      </div>
+      <div
+        style={{
+          marginTop: 30 * k,
+          opacity: useSpring(26),
+          fontFamily: MANROPE,
+          fontWeight: 700,
+          fontSize: 38 * k,
+          color: GOLD,
+          letterSpacing: 3 * k,
+        }}
+      >
+        EXPLORADOR DE BALANCES · GRATIS
+      </div>
+      <div
+        style={{
+          marginTop: 50 * k,
           background: '#fff',
           color: BLUE,
           fontFamily: MANROPE,
           fontWeight: 800,
-          fontSize: 42 * k,
-          padding: `${28 * k}px ${40 * k}px`,
+          fontSize: 46 * k,
+          padding: `${26 * k}px ${44 * k}px`,
           borderRadius: 999,
-          opacity: useSpring(20),
+          opacity: useSpring(36),
           transform: `scale(${pulse})`,
           boxShadow: '0 20px 60px rgba(26,79,232,.6)',
         }}
       >
-        herramientas.financesview.com/balances
-      </div>
-      <div style={{marginTop: 70 * k, opacity: useSpring(35), fontFamily: PLEX, color: SOFT, fontSize: 36 * k, lineHeight: 1.5}}>
-        <span style={{fontFamily: MANROPE, fontWeight: 800, color: '#fff', fontSize: 44 * k}}>Didimo Montoya, CPA</span>
-        <br />
-        El Arte de la Contabilidad
+        herramientas.financesview.com
       </div>
     </AbsoluteFill>
   );
@@ -551,7 +590,7 @@ const Cta: React.FC = () => {
 
 /* ---------------- composición ---------------- */
 
-const T = {hook: 90, search: 165, company: 165, charts: 180, tables: 210, stats: 90, cta: 120};
+const T = {hook: 132, search: 165, company: 150, charts: 110, tables: 150, stats: 105, cta: 120};
 export const TOTAL_FRAMES = Object.values(T).reduce((a, b) => a + b, 0);
 
 const Fade: React.FC<{children: React.ReactNode; dur: number}> = ({children, dur}) => {
@@ -560,27 +599,35 @@ const Fade: React.FC<{children: React.ReactNode; dur: number}> = ({children, dur
   return <AbsoluteFill style={{opacity: o}}>{children}</AbsoluteFill>;
 };
 
-export const BalancesPromo: React.FC = () => {
+export type PromoProps = {musica: boolean; voz: string};
+
+export const BalancesPromo: React.FC<PromoProps> = ({musica, voz}) => {
   let t = 0;
-  const seq = (dur: number, el: React.ReactNode, fadeIn = true) => {
+  const seq = (dur: number, el: React.ReactNode, linea: string) => {
     const from = t;
     t += dur;
     return (
       <Sequence from={from} durationInFrames={dur}>
-        {fadeIn ? <Fade dur={dur}>{el}</Fade> : el}
+        {voz && (
+          <Sequence from={6}>
+            <Audio src={staticFile(`audio/${voz}/${linea}.wav`)} />
+          </Sequence>
+        )}
+        <Fade dur={dur}>{el}</Fade>
       </Sequence>
     );
   };
   return (
     <AbsoluteFill style={{fontFamily: PLEX}}>
       <Background />
-      {seq(T.hook, <Hook />)}
-      {seq(T.search, <Search />)}
-      {seq(T.company, <Company />)}
-      {seq(T.charts, <Charts />)}
-      {seq(T.tables, <Tables />)}
-      {seq(T.stats, <Stats />)}
-      {seq(T.cta, <Cta />)}
+      {musica && <Audio src={staticFile('audio/musica.wav')} volume={voz ? 0.22 : 0.6} />}
+      {seq(T.hook, <Hook />, 'hook')}
+      {seq(T.search, <Search />, 'search')}
+      {seq(T.company, <Company />, 'company')}
+      {seq(T.charts, <Charts />, 'charts')}
+      {seq(T.tables, <Tables />, 'tables')}
+      {seq(T.stats, <Stats />, 'stats')}
+      {seq(T.cta, <Cta />, 'cta')}
     </AbsoluteFill>
   );
 };
