@@ -18,3 +18,16 @@ Contenido:
   `em_santa`). La voz se elige en `src/Root.tsx`.
 - `public/audio/musica.wav`: pista original sintetizada (sin derechos de terceros).
 - `public/fonts/`: Manrope e IBM Plex Sans (licencia OFL).
+
+## Control de calidad del render
+
+El navegador a veces entrega un fotograma en blanco al renderizar en paralelo.
+Antes de publicar, buscar fotogramas aislados (brillo distinto a sus dos vecinos):
+
+```
+ffmpeg -i out/MotionReel.mp4 -vf "scale=270:480,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-" -f null - 2>/dev/null | grep -o "YAVG=[0-9.]*" | cut -d= -f2 > y.txt
+```
+
+Si aparece alguno, volver a renderizar esa composición. `MotionReel` y
+`MotionReelSoloVoz` tienen la misma imagen: se puede tomar el video de una y el
+audio de la otra (`ffmpeg -i A.mp4 -i B.mp4 -map 0:v -map 1:a -c copy`).
