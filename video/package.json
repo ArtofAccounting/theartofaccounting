@@ -1,0 +1,18 @@
+{
+  "name": "video-promo",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render:reel": "remotion render src/index.ts BalancesReel out/balances-reel.mp4",
+    "render:linkedin": "remotion render src/index.ts BalancesLinkedIn out/balances-linkedin.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.533",
+    "@remotion/google-fonts": "^4.0.533",
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.533",
+    "typescript": "^7.0.2"
+  }
+}
