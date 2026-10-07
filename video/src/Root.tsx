@@ -1,12 +1,11 @@
 import {Composition} from 'remotion';
-import {BalancesPromo} from './BalancesPromo';
-
-const FPS = 30;
-const DURATION = 24 * FPS;
+import {BalancesPromo, TOTAL_FRAMES} from './BalancesPromo';
 
 export const Root: React.FC = () => (
   <>
-    <Composition id="BalancesReel" component={BalancesPromo} durationInFrames={DURATION} fps={FPS} width={1080} height={1920} />
-    <Composition id="BalancesLinkedIn" component={BalancesPromo} durationInFrames={DURATION} fps={FPS} width={1080} height={1350} />
+    {/* Instagram / Facebook (Reels) */}
+    <Composition id="BalancesReel" component={BalancesPromo} durationInFrames={TOTAL_FRAMES} fps={30} width={1080} height={1920} />
+    {/* LinkedIn (4:5) */}
+    <Composition id="BalancesLinkedIn" component={BalancesPromo} durationInFrames={TOTAL_FRAMES} fps={30} width={1080} height={1350} />
   </>
 );
