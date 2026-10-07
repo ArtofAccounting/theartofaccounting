@@ -13,23 +13,18 @@ import {
   GOLD,
   MANROPE,
   PLEX,
-  Background,
-  Caption,
-  Gold,
-  Hook,
   Stats,
-  Cta,
   LogoFV,
-  Fade,
-  T,
-  TOTAL_FRAMES,
   ease,
   useK,
   useIsTall,
   PromoProps,
 } from './BalancesPromo';
 
-export {TOTAL_FRAMES};
+import TIEMPOS from './voz-tiempos.json';
+
+/** Dirección que se promociona (un solo lugar para cambiarla). */
+export const SITE = 'app.finanzasview.com';
 
 // Colores de la página (los mismos de la herramienta)
 const INK = NAVY;
@@ -40,26 +35,34 @@ const GREEN = '#1B7A4B';
 
 /* ---------------- tiempos ---------------- */
 
-const DEMO_FROM = T.hook; // la toma continua empieza al terminar el gancho
-const DEMO_LEN = T.search + T.company + T.charts + T.tables;
+// Duración de cada escena (frames a 30 fps), ajustada a la locución
+export const T5 = {hook: 112, search: 110, company: 165, charts: 95, tables: 115, stats: 100, cta: 105};
+export const TOTAL5 = Object.values(T5).reduce((a, b) => a + b, 0);
+const VOZ_OFFSET = 4; // la voz entra 4 frames después del corte
+
+const DEMO_FROM = T5.hook; // la toma continua empieza al terminar el gancho
+const DEMO_LEN = T5.search + T5.company + T5.charts + T5.tables;
+const sS = T5.search;
+const sC = sS + T5.company;
+const sCh = sC + T5.charts;
 // frames locales de la toma (L)
 const L = {
   enter: 0,
-  clickSearch: 42,
-  type0: 48,
-  typeStep: 5,
-  pick: 140,
-  card: 160,
-  hoverMargin: 245,
-  toCharts: 300,
-  bars: 322,
-  stack: 352,
-  hoverBar: 380,
-  toTables: 408,
-  rows: 432,
-  hlNet: 470,
-  toRatios: 500,
-  hlSector: 528,
+  clickSearch: 18,
+  type0: 24,
+  typeStep: 4,
+  pick: sS - 18,
+  card: sS - 6,
+  hoverMargin: sS + 78,
+  toCharts: sC - 10,
+  bars: sC + 6,
+  stack: sC + 26,
+  hoverBar: sC + 48,
+  toTables: sCh - 10,
+  rows: sCh + 8,
+  hlNet: sCh + 32,
+  toRatios: sCh + 54,
+  hlSector: sCh + 74,
 };
 const WORD = 'favorita';
 
@@ -421,7 +424,7 @@ const Page: React.FC<{f: number}> = ({f}) => {
             <path fill={BLUE} d="M1.7 6 H61.3 L55.4 16.6 H16.2 L21.5 26.2 H51 V35.4 H26.9 L55.6 87 L51.2 95.3 Z" />
             <path fill={GOLD} d="M42.1 40.8 H51 L62 59.2 L95.3 1.3 H105.3 L61.5 76.4 Z" />
           </svg>
-          <span style={{fontFamily: MANROPE, fontWeight: 800, fontSize: 22, color: BLUE}}>El Arte de la Contabilidad</span>
+          <span style={{fontFamily: MANROPE, fontWeight: 800, fontSize: 22, color: BLUE}}>{SITE}</span>
         </div>
         <span style={{fontSize: 18, fontWeight: 600}}>Herramientas</span>
       </div>
@@ -547,6 +550,26 @@ const Page: React.FC<{f: number}> = ({f}) => {
           <Kpi label="Ingresos" value={millions(2690.1 * cnt(0))} sub="+5,7% frente a 2024" x={tileX(0)} y={tileY(0)} p={pop(f, L.card + 18 + 0)} />
           <Kpi label="Utilidad neta" value={millions(163.9 * cnt(1))} sub="2025" good x={tileX(1)} y={tileY(0)} p={pop(f, L.card + 18 + 6)} />
           <Kpi label="Margen neto" value={nf(6.1 * cnt(2), 1) + '%'} sub="Sector: 1,4%" good x={tileX(2)} y={tileY(0)} p={pop(f, L.card + 18 + 12)} glow={marginGlow} />
+          <div
+            style={{
+              position: 'absolute',
+              left: tileX(2) + Y.tileW - 150,
+              top: tileY(0) - 22,
+              zIndex: 8,
+              background: GOLD,
+              color: INK,
+              fontFamily: MANROPE,
+              fontWeight: 800,
+              fontSize: 20,
+              padding: '8px 16px',
+              borderRadius: 999,
+              boxShadow: '0 10px 30px rgba(245,168,0,.55)',
+              opacity: marginGlow,
+              transform: `scale(${0.6 + 0.4 * marginGlow}) rotate(-4deg)`,
+            }}
+          >
+            4× su sector
+          </div>
           <Kpi label="ROE" value={nf(8.4 * cnt(3), 1) + '%'} sub="Sector: 10,9%" good x={tileX(0)} y={tileY(1)} p={pop(f, L.card + 18 + 18)} />
           <Kpi label="Activo total" value={millions(2788.5 * cnt(4))} sub="2025" x={tileX(1)} y={tileY(1)} p={pop(f, L.card + 18 + 24)} />
           <Kpi label="Gasto en personal" value={millions(182.8 * cnt(5))} sub="6,8% de los ingresos" x={tileX(2)} y={tileY(1)} p={pop(f, L.card + 18 + 30)} />
@@ -596,7 +619,7 @@ const Page: React.FC<{f: number}> = ({f}) => {
                   {r}
                 </div>
               ) : (
-                <Row key={r[0]} p={ease(f, L.toRatios + 6 + i * 1.5, L.toRatios + 16 + i * 1.5)} label={r[0]} cells={[...r[1], r[2]]} ratio good />
+                <Row key={r[0]} p={ease(f, L.toRatios + 4 + i * 0.8, L.toRatios + 12 + i * 0.8)} label={r[0]} cells={[...r[1], r[2]]} ratio good />
               ),
             )}
             <div
@@ -693,7 +716,7 @@ const useShot = (f: number, viewH: number) => {
   // cámara: punto de la ventana (coords. de pantalla de la ventana) y acercamiento
   const fx = keys(f, [
     [0, WW / 2],
-    [30, WW / 2],
+    [10, WW / 2],
     [L.clickSearch, 480],
     [L.pick, 480],
     [L.card + 30, WW / 2],
@@ -714,7 +737,7 @@ const useShot = (f: number, viewH: number) => {
   ]);
   const fy = keys(f, [
     [0, viewH / 2],
-    [30, viewH / 2],
+    [10, viewH / 2],
     [L.clickSearch, Y.input + 170],
     [L.pick, Y.input + 170],
     [L.card + 30, Y.tiles + 80],
@@ -731,15 +754,15 @@ const useShot = (f: number, viewH: number) => {
   ]);
   const zoom = keys(f, [
     [0, 1],
-    [30, 1],
+    [10, 1],
     [L.clickSearch, 1.32],
     [L.pick, 1.32],
     [L.card + 30, 1.08],
     [L.hoverMargin - 10, 1.08],
     [L.hoverMargin + 10, 1.5],
     [L.toCharts - 5, 1.5],
-    [L.toCharts + 20, 1.12],
-    [L.hoverBar, 1.12],
+    [L.toCharts + 20, 1.25],
+    [L.hoverBar, 1.25],
     [L.hoverBar + 12, 1.4],
     [L.toTables - 4, 1.4],
     [L.toTables + 16, 1.05],
@@ -753,7 +776,7 @@ const useShot = (f: number, viewH: number) => {
   // cursor (coords. de pantalla de la ventana)
   const mx = keys(f, [
     [0, 820],
-    [14, 820],
+    [6, 820],
     [L.clickSearch - 4, 400],
     [L.pick - 30, 400],
     [L.pick - 14, 330],
@@ -768,7 +791,7 @@ const useShot = (f: number, viewH: number) => {
   ]);
   const my = keys(f, [
     [0, viewH * 0.75],
-    [14, viewH * 0.75],
+    [6, viewH * 0.75],
     [L.clickSearch - 4, Y.input + Y.inputH / 2],
     [L.pick - 30, Y.input + Y.inputH / 2],
     [L.pick - 14, Y.drop + Y.rowH * 1.5],
@@ -825,7 +848,7 @@ const Window: React.FC<{f: number; viewH: number}> = ({f, viewH}) => {
             <rect x="1" y="7" width="12" height="8" rx="2" fill="#C9D6FF" />
             <path d="M4 7 V5 a3 3 0 0 1 6 0 V7" stroke="#C9D6FF" strokeWidth="2" fill="none" />
           </svg>
-          herramientas.financesview.com/balances
+          {SITE}
         </div>
         <span style={{marginLeft: 12, fontSize: 14, fontWeight: 700, color: '#fff', background: 'rgba(245,168,0,.9)', borderRadius: 999, padding: '5px 12px', fontFamily: MANROPE}}>
           GRATIS
@@ -840,15 +863,6 @@ const Window: React.FC<{f: number; viewH: number}> = ({f, viewH}) => {
           <Ripple key={c} x={mx} y={my} at={c} f={f} />
         ))}
         <Cursor x={mx} y={my} down={down} />
-        {/* reflejo de vidrio */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            background: `linear-gradient(115deg, transparent ${30 + ((f * 0.4) % 80)}%, rgba(255,255,255,.10) ${36 + ((f * 0.4) % 80)}%, transparent ${44 + ((f * 0.4) % 80)}%)`,
-          }}
-        />
       </div>
     </div>
   );
@@ -857,21 +871,16 @@ const Window: React.FC<{f: number; viewH: number}> = ({f, viewH}) => {
 const Demo: React.FC = () => {
   const f = useCurrentFrame();
   const {width, height} = useVideoConfig();
-  const k = useK();
   const tall = useIsTall();
   const top = tall ? 380 : 250 * (height / 1350);
   const viewH = height - top - (tall ? 70 : 40) - BAR;
   const base = Math.min((width * 0.93) / WW, 1);
   const {fx, fy, zoom} = useShot(f, viewH);
-  // entrada 3D de la ventana
-  const enter = ease(f, 0, 24);
-  const tiltX = (1 - enter) * 28 + Math.sin(f / 70) * 2.2;
-  const tiltY = Math.sin(f / 95) * 3;
-  // la cámara lleva el punto (fx, fy) de la ventana al centro del área visible
-  const z = zoom * base;
+  // entrada de la ventana: solo 2D (las transformaciones 3D hacían parpadear el render)
+  const enter = ease(f, 0, 14);
+  const z = zoom * base * (0.92 + 0.08 * enter);
   const cx = width / 2;
   const cy = top + (viewH + BAR) * base * 0.5;
-  // con zoom 1 y el foco en el centro, la ventana queda centrada en su lugar
   let X = cx - fx * z;
   let Yy = cy - (fy + BAR / 2) * z;
   // límites: la ventana nunca deja huecos dentro del área visible
@@ -879,116 +888,286 @@ const Demo: React.FC = () => {
   const Hz = (viewH + BAR) * z;
   const areaBottom = top + (viewH + BAR) * base;
   X = Wz >= width ? Math.min(0, Math.max(width - Wz, X)) : (width - Wz) / 2;
-  Yy = Math.min(top, Math.max(areaBottom - Hz, Yy));
+  Yy = Math.min(top, Math.max(areaBottom - Hz, Yy)) + (1 - enter) * 120;
   return (
-    <AbsoluteFill style={{perspective: 2200 * k}}>
+    <AbsoluteFill>
       <div
         style={{
           position: 'absolute',
           left: 0,
           top: 0,
           transformOrigin: '0 0',
-          transform: `translate(${X}px, ${Yy + (1 - enter) * 400 * k}px) scale(${z}) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+          transform: `translate(${Math.round(X)}px, ${Math.round(Yy)}px) scale(${z})`,
           opacity: enter,
         }}
       >
         <Window f={f} viewH={viewH} />
       </div>
-      {/* viñeta superior para que los textos se lean sobre la ventana */}
-      <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(11,27,74,.95) 0%, rgba(11,27,74,.75) ${tall ? 14 : 15}%, transparent ${tall ? 22 : 24}%)`}} />
-      <DemoCaptions />
+      {/* viñeta superior para que los subtítulos se lean sobre la ventana */}
+      <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(6,13,38,.97) 0%, rgba(6,13,38,.8) ${tall ? 15 : 16}%, transparent ${tall ? 23 : 25}%)`}} />
+      <Punch />
     </AbsoluteFill>
   );
 };
 
-const DemoCaptions: React.FC = () => {
-  const s = T.search;
-  const c = s + T.company;
-  const ch = c + T.charts;
+/** Golpe visual con la cifra clave, sincronizado con la voz. */
+const Punch: React.FC = () => {
+  const f = useCurrentFrame();
+  const k = useK();
+  const at = sS + VOZ_OFFSET + 2;
+  const p = ease(f, at, at + 8);
+  const out = ease(f, at + 44, at + 54);
+  if (f < at || out >= 1) return null;
   return (
-    <>
-      <Sequence from={0} durationInFrames={s}>
-        <Caption out={s - 12}>
-          Busca cualquier empresa
-          <br />
-          por <Gold>nombre o RUC</Gold>
-        </Caption>
-      </Sequence>
-      <Sequence from={s} durationInFrames={T.company}>
-        <Caption out={70}>Su ficha financiera, al instante</Caption>
-        <Caption delay={80}>
-          Margen neto <Gold>6,1 %</Gold>
-          <br />
-          vs. su sector 1,4 %
-        </Caption>
-      </Sequence>
-      <Sequence from={c} durationInFrames={T.charts}>
-        <Caption>
-          <Gold>4 años</Gold> de evolución
-          <br />y cómo se financia
-        </Caption>
-      </Sequence>
-      <Sequence from={ch} durationInFrames={T.tables}>
-        <Caption out={L.toRatios - ch - 6}>
-          Estados financieros
-          <br />
-          <Gold>completos</Gold>
-        </Caption>
-        <Caption delay={L.toRatios - ch + 4}>
-          Compáralo con la
-          <br />
-          <Gold>mediana de su sector</Gold>
-        </Caption>
-      </Sequence>
-    </>
+    <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', background: `rgba(6,13,38,${0.88 * p * (1 - out)})`}}>
+      <div style={{textAlign: 'center', opacity: p * (1 - out), transform: `scale(${1.6 - 0.6 * p + out * 0.2})`}}>
+        <div style={{fontFamily: MANROPE, fontWeight: 800, fontSize: 64 * k, color: '#fff', letterSpacing: 2 * k}}>UTILIDAD 2025</div>
+        <div style={{fontFamily: MANROPE, fontWeight: 800, fontSize: 190 * k, color: GOLD, letterSpacing: -6 * k, lineHeight: 1, textShadow: '0 20px 60px rgba(245,168,0,.45)'}}>
+          $163,9 M
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------------- subtítulos palabra por palabra ---------------- */
+
+type Linea = keyof (typeof TIEMPOS)['em_alex'];
+// Texto en pantalla. "palabra|peso" ajusta la duración de las cifras habladas.
+const SUBS: Record<Linea, string> = {
+  hook: '¿Sabes cuánto ganó la dueña de Supermaxi en 2025|14?',
+  search: 'Entra al Explorador de Balances y búscala por nombre o RUC.',
+  company: '$163|22 millones de utilidad. Y un margen 4|6 veces mayor que el de su sector.',
+  charts: 'Mira 4|6 años de evolución, y cómo se financia.',
+  tables: 'Estados financieros completos, frente a la mediana del sector.',
+  stats: 'Más de 170.000|26 empresas del Ecuador. Gratis.',
+  cta: 'Búscala ya en app.finanzasview.com|30',
+};
+const RESALTE = /^(Supermaxi|2025|\$163|millones|4|cuatro|completos|mediana|Gratis|nombre|RUC|170\.000)/;
+
+const WordCaptions: React.FC<{linea: Linea; voz: string; big?: boolean}> = ({linea, voz, big}) => {
+  const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const k = useK();
+  const tall = useIsTall();
+  const t = (TIEMPOS as Record<string, Record<string, {start: number; end: number}>>)[voz]?.[linea] ?? TIEMPOS.em_alex[linea];
+  const toks = SUBS[linea].split(' ').map((w) => {
+    const m = w.match(/^(.*?)\|(\d+)(.*)$/);
+    const txt = m ? m[1] + m[3] : w;
+    const base = m ? +m[2] : txt.replace(/[¿?.,]/g, '').length + 1;
+    return {txt, peso: base + (/[.,?]$/.test(txt) ? 4 : 0)};
+  });
+  const total = toks.reduce((a, b) => a + b.peso, 0);
+  const t0 = VOZ_OFFSET + t.start * fps;
+  const span = (t.end - t.start) * fps;
+  let acc = 0;
+  const words = toks.map((w) => {
+    const s0 = t0 + (acc / total) * span;
+    acc += w.peso;
+    return {...w, s0};
+  });
+  // grupos de hasta 3 palabras; se corta también en puntuación
+  const groups: (typeof words)[] = [];
+  let g: typeof words = [];
+  words.forEach((w) => {
+    g.push(w);
+    if (g.length === 3 || /[.,?]$/.test(w.txt)) {
+      groups.push(g);
+      g = [];
+    }
+  });
+  if (g.length) groups.push(g);
+  const cur = Math.max(0, groups.findIndex((gr, i) => f >= gr[0].s0 && (i === groups.length - 1 || f < groups[i + 1][0].s0)));
+  const gr = groups[cur];
+  const fs = (big ? 108 : 78) * k * (tall ? 1 : 1.15);
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 50 * k,
+        right: 50 * k,
+        top: big ? '38%' : (tall ? 150 : 60) * k,
+        textAlign: 'center',
+        fontFamily: MANROPE,
+        fontWeight: 800,
+        fontSize: fs,
+        lineHeight: 1.12,
+        letterSpacing: -1.5 * k,
+        zIndex: 20,
+      }}
+    >
+      {gr.map((w, i) => {
+        const on = f >= w.s0;
+        const p = ease(f, w.s0, w.s0 + 5);
+        const hot = RESALTE.test(w.txt.replace(/^[¿$]?/, (m) => (m === '$' ? '$' : '')));
+        return (
+          <span
+            key={i}
+            style={{
+              display: 'inline-block',
+              marginRight: fs * 0.25,
+              color: on ? (hot ? GOLD : '#fff') : 'rgba(255,255,255,.35)',
+              transform: `translateY(${(1 - p) * 10}px) scale(${0.9 + 0.1 * p})`,
+              textShadow: '0 4px 24px rgba(6,13,38,.95)',
+            }}
+          >
+            {w.txt}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ---------------- gancho, fondo y cierre ---------------- */
+
+const BG = '#060D26';
+const StillBackground: React.FC = () => (
+  <AbsoluteFill style={{background: BG}}>
+    <AbsoluteFill
+      style={{
+        background: 'radial-gradient(circle at 25% 15%, rgba(26,79,232,.55), transparent 55%), radial-gradient(circle at 85% 90%, rgba(26,79,232,.35), transparent 50%)',
+      }}
+    />
+  </AbsoluteFill>
+);
+
+/** Gancho: pregunta + cifra que se "busca" (bucle abierto que se cierra en la ficha). */
+const Hook5: React.FC = () => {
+  const f = useCurrentFrame();
+  const k = useK();
+  const digits = '$???.???.???'
+    .split('')
+    .map((c, i) => (c === '?' ? String((Math.floor(f / 2) * 7 + i * 3) % 10) : c))
+    .join('');
+  const shake = f < 6 ? Math.sin(f * 3) * 6 * (1 - f / 6) : 0;
+  return (
+    <AbsoluteFill style={{alignItems: 'center'}}>
+      <div
+        style={{
+          position: 'absolute',
+          top: '62%',
+          fontFamily: MANROPE,
+          fontWeight: 800,
+          fontSize: 120 * k,
+          color: GOLD,
+          letterSpacing: -2 * k,
+          fontVariantNumeric: 'tabular-nums',
+          transform: `translateX(${shake}px)`,
+          textShadow: '0 20px 60px rgba(245,168,0,.4)',
+        }}
+      >
+        {digits}
+      </div>
+      <div style={{position: 'absolute', top: '74%', fontFamily: PLEX, fontSize: 40 * k, color: '#C9D6FF'}}>Datos públicos · Superintendencia de Compañías</div>
+    </AbsoluteFill>
+  );
+};
+
+const Cta5: React.FC = () => {
+  const f = useCurrentFrame();
+  const k = useK();
+  const logo = ease(f, 0, 10);
+  const pulse = 1 + Math.sin(f / 6) * 0.02 * ease(f, 30, 40);
+  return (
+    <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', padding: 60 * k, textAlign: 'center'}}>
+      <div style={{background: '#fff', borderRadius: 48 * k, padding: 44 * k, transform: `scale(${0.6 + logo * 0.4})`, opacity: logo, boxShadow: '0 30px 90px rgba(26,79,232,.55)'}}>
+        <LogoFV size={200 * k} />
+      </div>
+      <div style={{marginTop: 50 * k, fontFamily: MANROPE, fontWeight: 700, fontSize: 40 * k, color: GOLD, letterSpacing: 3 * k, opacity: ease(f, 10, 20)}}>
+        EXPLORADOR DE BALANCES · GRATIS
+      </div>
+      <div
+        style={{
+          marginTop: 36 * k,
+          background: '#fff',
+          color: BLUE,
+          fontFamily: MANROPE,
+          fontWeight: 800,
+          fontSize: 66 * k,
+          padding: `${26 * k}px ${48 * k}px`,
+          borderRadius: 999,
+          opacity: ease(f, 16, 26),
+          transform: `scale(${pulse})`,
+          boxShadow: '0 20px 70px rgba(26,79,232,.7)',
+        }}
+      >
+        {SITE}
+      </div>
+    </AbsoluteFill>
   );
 };
 
 /* ---------------- composición ---------------- */
 
+const Sfx: React.FC<{at: number; src: string; vol?: number}> = ({at, src, vol = 1}) => (
+  <Sequence from={Math.round(at)} durationInFrames={40}>
+    <Audio src={staticFile(`audio/sfx/${src}.wav`)} volume={vol} />
+  </Sequence>
+);
+
 export const BalancesMotion: React.FC<PromoProps> = ({musica, voz}) => {
-  const starts = {
+  const starts: Record<Linea, number> = {
     hook: 0,
-    search: T.hook,
-    company: T.hook + T.search,
-    charts: T.hook + T.search + T.company,
-    tables: T.hook + T.search + T.company + T.charts,
+    search: T5.hook,
+    company: T5.hook + T5.search,
+    charts: T5.hook + T5.search + T5.company,
+    tables: T5.hook + T5.search + T5.company + T5.charts,
     stats: DEMO_FROM + DEMO_LEN,
-    cta: DEMO_FROM + DEMO_LEN + T.stats,
+    cta: DEMO_FROM + DEMO_LEN + T5.stats,
   };
+  const D = DEMO_FROM;
+  const lineas = Object.keys(starts) as Linea[];
   return (
     <AbsoluteFill style={{fontFamily: PLEX}}>
-      <Background />
-      {musica && <Audio src={staticFile('audio/musica.wav')} volume={voz ? 0.22 : 0.6} />}
+      <StillBackground />
+      {musica && <Audio src={staticFile('audio/musica_v5.wav')} volume={voz ? 0.2 : 0.6} />}
       {voz &&
-        (Object.keys(starts) as (keyof typeof starts)[]).map((key) => (
-          <Sequence key={key} from={starts[key] + 6}>
-            <Audio src={staticFile(`audio/${voz}/${key}.wav`)} />
+        lineas.map((key) => (
+          <Sequence key={key} from={starts[key] + VOZ_OFFSET}>
+            <Audio src={staticFile(`audio/v5_${voz}/${key}.wav`)} />
           </Sequence>
         ))}
-      <Sequence from={0} durationInFrames={T.hook}>
-        <Fade dur={T.hook}>
-          <Hook />
-        </Fade>
+
+      {/* efectos de sonido */}
+      <Sfx at={0} src="impacto" vol={0.7} />
+      <Sfx at={D - 30} src="subida" vol={0.5} />
+      <Sfx at={D} src="whoosh" vol={0.7} />
+      <Sfx at={D + L.clickSearch} src="clic" vol={0.8} />
+      {Array.from({length: WORD.length}, (_, i) => (
+        <Sfx key={i} at={D + L.type0 + i * L.typeStep} src="tecla" vol={0.6} />
+      ))}
+      <Sfx at={D + L.pick} src="clic" vol={0.8} />
+      <Sfx at={D + sS + VOZ_OFFSET + 2} src="impacto" vol={0.8} />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <Sfx key={'p' + i} at={D + L.card + 18 + i * 6} src="pop" vol={0.35} />
+      ))}
+      <Sfx at={D + L.hoverMargin + 6} src="pop" vol={0.7} />
+      <Sfx at={D + L.toCharts} src="whoosh" vol={0.6} />
+      <Sfx at={D + L.toTables} src="whoosh" vol={0.6} />
+      <Sfx at={D + L.toRatios} src="whoosh" vol={0.5} />
+      <Sfx at={D + L.hlSector} src="pop" vol={0.6} />
+      <Sfx at={starts.stats} src="whoosh" vol={0.6} />
+      <Sfx at={starts.cta} src="impacto" vol={0.8} />
+
+      <Sequence from={0} durationInFrames={T5.hook}>
+        <Hook5 />
+        <WordCaptions linea="hook" voz={voz} big />
       </Sequence>
       <Sequence from={DEMO_FROM} durationInFrames={DEMO_LEN}>
-        <Fade dur={DEMO_LEN}>
-          <Demo />
-        </Fade>
+        <Demo />
       </Sequence>
-      <Sequence from={starts.stats} durationInFrames={T.stats}>
-        <Fade dur={T.stats}>
-          <Stats />
-        </Fade>
+      {(['search', 'company', 'charts', 'tables'] as Linea[]).map((key) => (
+        <Sequence key={key} from={starts[key]} durationInFrames={key === 'search' ? T5.search : key === 'company' ? T5.company : key === 'charts' ? T5.charts : T5.tables}>
+          <WordCaptions linea={key} voz={voz} />
+        </Sequence>
+      ))}
+      <Sequence from={starts.stats} durationInFrames={T5.stats}>
+        <Stats />
       </Sequence>
-      <Sequence from={starts.cta} durationInFrames={T.cta}>
-        <Fade dur={T.cta}>
-          <Cta />
-        </Fade>
+      <Sequence from={starts.cta} durationInFrames={T5.cta}>
+        <Cta5 />
       </Sequence>
     </AbsoluteFill>
   );
 };
-
-// Exportado para que el logo también pueda usarse aparte si hace falta
-export {LogoFV};

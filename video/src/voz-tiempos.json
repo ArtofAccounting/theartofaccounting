@@ -1,0 +1,113 @@
+{
+ "ef_dora": {
+  "charts": {
+   "dur": 2.752,
+   "start": 0.028,
+   "end": 2.702
+  },
+  "company": {
+   "dur": 5.184,
+   "start": 0.03,
+   "end": 5.12
+  },
+  "cta": {
+   "dur": 2.624,
+   "start": 0.028,
+   "end": 2.578
+  },
+  "hook": {
+   "dur": 3.392,
+   "start": 0.03,
+   "end": 3.346
+  },
+  "search": {
+   "dur": 3.307,
+   "start": 0.029,
+   "end": 3.247
+  },
+  "stats": {
+   "dur": 3.029,
+   "start": 0.028,
+   "end": 2.974
+  },
+  "tables": {
+   "dur": 3.307,
+   "start": 0.03,
+   "end": 3.25
+  }
+ },
+ "em_alex": {
+  "charts": {
+   "dur": 2.773,
+   "start": 0.03,
+   "end": 2.721
+  },
+  "company": {
+   "dur": 5.099,
+   "start": 0.03,
+   "end": 5.024
+  },
+  "cta": {
+   "dur": 2.645,
+   "start": 0.029,
+   "end": 2.598
+  },
+  "hook": {
+   "dur": 3.435,
+   "start": 0.03,
+   "end": 3.365
+  },
+  "search": {
+   "dur": 3.349,
+   "start": 0.029,
+   "end": 3.289
+  },
+  "stats": {
+   "dur": 3.115,
+   "start": 0.028,
+   "end": 3.049
+  },
+  "tables": {
+   "dur": 3.371,
+   "start": 0.029,
+   "end": 3.295
+  }
+ },
+ "em_santa": {
+  "charts": {
+   "dur": 2.773,
+   "start": 0.028,
+   "end": 2.717
+  },
+  "company": {
+   "dur": 5.12,
+   "start": 0.031,
+   "end": 5.034
+  },
+  "cta": {
+   "dur": 2.709,
+   "start": 0.029,
+   "end": 2.648
+  },
+  "hook": {
+   "dur": 3.456,
+   "start": 0.05,
+   "end": 3.388
+  },
+  "search": {
+   "dur": 3.371,
+   "start": 0.029,
+   "end": 3.308
+  },
+  "stats": {
+   "dur": 3.136,
+   "start": 0.028,
+   "end": 3.075
+  },
+  "tables": {
+   "dur": 3.456,
+   "start": 0.029,
+   "end": 3.395
+  }
+ }
+}
