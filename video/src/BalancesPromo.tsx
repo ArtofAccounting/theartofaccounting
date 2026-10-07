@@ -13,8 +13,8 @@ import {
 import {loadFont} from '@remotion/fonts';
 
 // Tipografías de la marca, incluidas en public/fonts (licencia OFL)
-const MANROPE = 'Manrope';
-const PLEX = 'IBM Plex Sans';
+export const MANROPE = 'Manrope';
+export const PLEX = 'IBM Plex Sans';
 for (const w of ['600', '700', '800']) {
   loadFont({family: MANROPE, url: staticFile(`fonts/manrope-latin-${w}-normal.woff2`), weight: w});
 }
@@ -23,10 +23,10 @@ for (const w of ['400', '500', '600']) {
 }
 
 // Marca (misma paleta que financesview.com)
-const BLUE = '#1A4FE8';
-const NAVY = '#0B1B4A';
-const GOLD = '#F5A800';
-const SOFT = '#C9D6FF';
+export const BLUE = '#1A4FE8';
+export const NAVY = '#0B1B4A';
+export const GOLD = '#F5A800';
+export const SOFT = '#C9D6FF';
 
 const img = (f: string) => staticFile('balances/' + f);
 
@@ -37,13 +37,13 @@ const POS = {card: 579, charts: 1190, tables: 2270};
 
 /* ---------------- utilidades ---------------- */
 
-const useSpring = (delay = 0, damping = 200) => {
+export const useSpring = (delay = 0, damping = 200) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   return spring({frame: frame - delay, fps, config: {damping}});
 };
 
-const ease = (frame: number, a: number, b: number, from = 0, to = 1) =>
+export const ease = (frame: number, a: number, b: number, from = 0, to = 1) =>
   interpolate(frame, [a, b], [from, to], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -51,19 +51,19 @@ const ease = (frame: number, a: number, b: number, from = 0, to = 1) =>
   });
 
 /** Escala general: 1 en el Reel (1080×1920). */
-const useK = () => {
+export const useK = () => {
   const {width, height} = useVideoConfig();
   return Math.min(width / 1080, height / 1920);
 };
 
-const useIsTall = () => {
+export const useIsTall = () => {
   const {width, height} = useVideoConfig();
   return height / width > 1.5;
 };
 
 /* ---------------- fondo ---------------- */
 
-const Background: React.FC = () => {
+export const Background: React.FC = () => {
   const frame = useCurrentFrame();
   const drift = Math.sin(frame / 90) * 60;
   return (
@@ -88,7 +88,7 @@ const Background: React.FC = () => {
 
 /* ---------------- textos ---------------- */
 
-const Caption: React.FC<{
+export const Caption: React.FC<{
   children: React.ReactNode;
   delay?: number;
   out?: number; // frame (local) en que sale
@@ -125,7 +125,7 @@ const Caption: React.FC<{
   );
 };
 
-const Gold: React.FC<{children: React.ReactNode}> = ({children}) => <span style={{color: GOLD}}>{children}</span>;
+export const Gold: React.FC<{children: React.ReactNode}> = ({children}) => <span style={{color: GOLD}}>{children}</span>;
 
 /* ---------------- celular ---------------- */
 
@@ -205,7 +205,7 @@ const Tap: React.FC<{x: number; y: number; at: number}> = ({x, y, at}) => {
 /* ---------------- escenas ---------------- */
 
 // 1. Gancho
-const Hook: React.FC = () => {
+export const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const k = useK();
   const {width, height} = useVideoConfig();
@@ -484,7 +484,7 @@ const Stat: React.FC<{value: string; label: string; at: number}> = ({value, labe
   );
 };
 
-const Stats: React.FC = () => {
+export const Stats: React.FC = () => {
   const frame = useCurrentFrame();
   const k = useK();
   const n = Math.round(ease(frame, 0, 35, 0, 174833));
@@ -498,7 +498,7 @@ const Stats: React.FC = () => {
 };
 
 // 7. Cierre con el logo FV
-const LogoFV: React.FC<{size: number}> = ({size}) => {
+export const LogoFV: React.FC<{size: number}> = ({size}) => {
   const frame = useCurrentFrame();
   const blue = ease(frame, 0, 18);
   const gold = ease(frame, 12, 30);
@@ -518,7 +518,7 @@ const LogoFV: React.FC<{size: number}> = ({size}) => {
   );
 };
 
-const Cta: React.FC = () => {
+export const Cta: React.FC = () => {
   const frame = useCurrentFrame();
   const k = useK();
   const pulse = 1 + Math.sin(frame / 6) * 0.025 * ease(frame, 50, 60);
@@ -590,10 +590,10 @@ const Cta: React.FC = () => {
 
 /* ---------------- composición ---------------- */
 
-const T = {hook: 132, search: 165, company: 150, charts: 110, tables: 150, stats: 105, cta: 120};
+export const T = {hook: 132, search: 165, company: 150, charts: 110, tables: 150, stats: 105, cta: 120};
 export const TOTAL_FRAMES = Object.values(T).reduce((a, b) => a + b, 0);
 
-const Fade: React.FC<{children: React.ReactNode; dur: number}> = ({children, dur}) => {
+export const Fade: React.FC<{children: React.ReactNode; dur: number}> = ({children, dur}) => {
   const frame = useCurrentFrame();
   const o = Math.min(ease(frame, 0, 8), 1 - ease(frame, dur - 8, dur));
   return <AbsoluteFill style={{opacity: o}}>{children}</AbsoluteFill>;

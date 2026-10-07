@@ -3,8 +3,11 @@
 - `npm install`
 - `npm run studio` para editar en vivo.
 - Render: `npx remotion render src/index.ts <Composición> out/<archivo>.mp4`
-  - `BalancesReel` (9:16, voz + música), `BalancesReelSoloVoz` (9:16, solo voz,
-    para añadir el audio en tendencia desde Instagram/TikTok) y `BalancesLinkedIn` (4:5).
+  - **Motion graphic** (interfaz animada con cursor y cámara, `src/BalancesMotion.tsx`):
+    `MotionReel` (9:16, voz + música), `MotionReelSoloVoz` (9:16, solo voz, para
+    añadir el audio en tendencia desde Instagram/TikTok) y `MotionLinkedIn` (4:5).
+  - Versión con capturas (`src/BalancesPromo.tsx`): `BalancesReel`,
+    `BalancesReelSoloVoz` y `BalancesLinkedIn`.
 - Después del render, normalizar el volumen para redes:
   `ffmpeg -i in.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -c:a aac -b:a 192k out.mp4`
 
